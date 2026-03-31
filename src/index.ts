@@ -44,7 +44,13 @@ app.get("/lessons", async (c) => {
 	try {
 		const lessons = await LessonModel.find({ published: true });
 		console.log(lessons);
-		return c.json(lessons);
+		return c.json(lessons, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
 		return c.json({ error: "Failed to fetch lessons" }, 500);
@@ -75,7 +81,13 @@ app.get("/lesson/:id", async (c) => {
 
 	try {
 		const lesson = await LessonModel.findById(id);
-		return c.json(lesson);
+		return c.json(lesson, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (error) {
 		console.error("Error fetching lesson");
 		return c.json({ error: "Failed to fetch lessons" }, 500);
@@ -96,7 +108,13 @@ app.post("/lesson", async (c) => {
 			steps: lesson.steps,
 		});
 
-		return c.json(dbLesson, 201);
+		return c.json(dbLesson, 201, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (e) {
 		return c.json({ error: "Failed to fetch lessons" }, 500);
 	}
@@ -121,7 +139,13 @@ app.put("/lesson/:id", async (c) => {
 
 		const dbLesson = await LessonModel.findByIdAndUpdate(id, lesson);
 
-		return c.json({ message: "Lesson updated successfully" });
+		return c.json({ message: "Lesson updated successfully" }, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (e) {
 		console.error(e);
 		return c.json({ error: "Failed to update the lesson" });
@@ -133,7 +157,13 @@ app.patch("/lesson/:id", async (c) => {
 	const body = await c.req.json();
 	try {
 		const dbLesson = await LessonModel.findByIdAndUpdate(id, body);
-		return c.json({ message: "Lesson updated successfully" });
+		return c.json({ message: "Lesson updated successfully" }, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (e) {
 		console.error(e);
 		return c.json({ error: "Failed to update the lesson" });
