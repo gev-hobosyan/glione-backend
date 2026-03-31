@@ -20,14 +20,16 @@ async function connectDB() {
 	}
 
 	if (!cached.promise) {
-		const opts = {
-			bufferCommands: false,
-			serverApi: { version: "1", strict: true, deprecationErrors: true },
+		const options = {
+			appName: "devrel.vercel.integration",
+			maxIdleTimeMS: 5000,
 		};
 
-		cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-			return mongoose;
-		});
+		cached.promise = mongoose
+			.connect(MONGODB_URI, options)
+			.then((mongoose) => {
+				return mongoose;
+			});
 	}
 
 	try {
