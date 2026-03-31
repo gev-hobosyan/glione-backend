@@ -57,7 +57,13 @@ app.get("/lessons/display", async (c) => {
 			{ published: true },
 			"title tags authors section",
 		);
-		return c.json(lessons);
+		return c.json(lessons, {
+			headers: {
+				"Access-Control-Allow-Origin": "http://localhost:5173",
+				"Access-Control-Allow-Methods": "*",
+				"Access-Control-Allow-Headers": "*",
+			},
+		});
 	} catch (e) {
 		console.error("Error fetching lessons:", e);
 		return c.json({ error: "Failed to fetch lessons" }, 500);
