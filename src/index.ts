@@ -34,7 +34,7 @@ app.get("/lessons/display", async (c) => {
 	try {
 		const lessons = await LessonModel.find(
 			{ published: true },
-			"title tags authors section description",
+			"title description tags authors section",
 		);
 		return c.json(lessons);
 	} catch (e) {
