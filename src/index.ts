@@ -23,7 +23,6 @@ app.use("*", async (c, next) => {
 app.get("/lessons", async (c) => {
 	try {
 		const lessons = await LessonModel.find({ published: true });
-		console.log(lessons);
 		return c.json(lessons);
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
@@ -63,6 +62,7 @@ app.post("/lesson", async (c) => {
 
 		const dbLesson = await LessonModel.create({
 			title: lesson.title,
+			description: lesson.description,
 			published: lesson.published,
 			tags: lesson.tags,
 			authors: lesson.authors,
@@ -86,6 +86,17 @@ app.delete("/lesson/:id", async (c) => {
 		return c.json({ error: "Failed to delete the lesson" }, 500);
 	}
 });
+
+app.delete("/lessons", async (c) => {
+	try {
+		const lesson = await LessonModel.deleteMany({});
+		return c.json({ message: "Lessons deleted successfully" });
+	} catch (error) {
+		console.error("Error fetching lessons:", error);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+})
+
 
 app.put("/lesson/:id", async (c) => {
 	const id = c.req.param("id");
@@ -140,6 +151,7 @@ interface Tag {
 
 interface Lesson {
 	title: string;
+	description: string;
 	published: boolean;
 	tags: Tag[];
 	authors: Author[];

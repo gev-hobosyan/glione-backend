@@ -4,6 +4,7 @@ const lessonSchema = new Schema(
 	{
 		title: { type: String, required: true },
 		published: { type: Boolean, default: false },
+		description: { type: String, required: true },
 		tags: [{ name: { type: String } }],
 		authors: [{ name: { type: String } }],
 		section: { type: String, required: true },
