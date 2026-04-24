@@ -15,6 +15,7 @@ const lessonSchema = new Schema(
 				content: { type: String },
 				predefinedCode: { type: String },
 				rightAnswer: { type: String },
+				map: { type: String },
 				choices: [{ text: { type: String }, isRight: { type: Boolean } }],
 			},
 		],
