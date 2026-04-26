@@ -30,6 +30,17 @@ app.get("/lessons", async (c) => {
 	}
 });
 
+app.get("/lessons/count/:count", async (c) => {
+	const count = parseInt(c.req.param("count"));
+	try {
+		const lessons = await LessonModel.find({ published: true }).limit(count);
+		return c.json(lessons);
+	} catch (error) {
+		console.error("Error fetching lessons:", error);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+});
+
 app.get("/lessons/display", async (c) => {
 	try {
 		const lessons = await LessonModel.find(
@@ -95,8 +106,7 @@ app.delete("/lessons", async (c) => {
 		console.error("Error fetching lessons:", error);
 		return c.json({ error: "Failed to fetch lessons" }, 500);
 	}
-})
-
+});
 
 app.put("/lesson/:id", async (c) => {
 	const id = c.req.param("id");
