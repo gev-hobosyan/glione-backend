@@ -3,6 +3,7 @@ import connectDB from "./db";
 import { cors } from "hono/cors";
 import lessonsApp from "./routes/lessons";
 import lessonApp from "./routes/lesson";
+import userApp from "./routes/user";
 
 const app = new Hono();
 
@@ -16,6 +17,16 @@ app.use(
 	}),
 );
 
+app.use(
+	"*",
+	cors({
+		origin: "https://glione.vercel.app",
+		allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+);
+
 app.use("*", async (c, next) => {
 	await connectDB();
 	await next();
@@ -23,5 +34,6 @@ app.use("*", async (c, next) => {
 
 app.route("/lessons", lessonsApp);
 app.route("/lesson", lessonApp);
+app.route("/user", userApp);
 
 export default app;

@@ -67,6 +67,8 @@ lessonApp.get("/:id", async (c) => {
 
 	try {
 		const lesson = await LessonModel.findById(id);
+		console.log(lesson.createdAt instanceof Date);
+
 		return c.json(lesson);
 	} catch (error) {
 		console.error("Error fetching lesson");
