@@ -13,6 +13,16 @@ lessonsApp.get("/", async (c) => {
 	}
 });
 
+lessonsApp.get("/admin/", async (c) => {
+	try {
+		const lessons = await LessonModel.find();
+		return c.json(lessons);
+	} catch (error) {
+		console.error("Error fetching lessons:", error);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+});
+
 lessonsApp.get("/count/:count", async (c) => {
 	const count = parseInt(c.req.param("count"));
 	try {
