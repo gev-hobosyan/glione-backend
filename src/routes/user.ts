@@ -27,6 +27,48 @@ userApp.get("/xp/:id", async (c) => {
 	}
 });
 
+userApp.put("/xp/:id", async (c) => {
+	const id = c.req.param("id");
+	const body = await c.req.json();
+
+	try {
+		const user = await UserModel.findOneAndUpdate(
+			{ userId: id },
+			{
+				xp: body["xp"] || 1,
+			},
+		);
+
+		return c.json(user);
+	} catch (e) {
+		console.log(`Error user/role/:id GET: ${e}`);
+		return c.json({ error: "Failed to update user xp" }, 500);
+	}
+});
+
+userApp.put("/energy/:id", async (c) => {
+	const id = c.req.param("id");
+	const body = await c.req.json();
+
+	try {
+		const user = await UserModel.findOne({ userId: id });
+
+		const updatedUser = await UserModel.findOneAndUpdate(
+			{
+				userId: id,
+			},
+			{
+				energy: user["energy"] - (body["energy"] || 1),
+			},
+		);
+
+		return c.json(updatedUser);
+	} catch (e) {
+		console.log(`Error user/role/:id GET: ${e}`);
+		return c.json({ error: "Failed to update user energy" }, 500);
+	}
+});
+
 userApp.get("role/:id", async (c) => {
 	const id = c.req.param("id");
 
@@ -92,10 +134,14 @@ userApp.get("/streak/:id", async (c) => {
 	}
 });
 
-userApp.post("/", async (c) => {
+userApp.post("/:userId", async (c) => {
+	const userId = c.req.param("userId");
+	const body = await c.req.json();
+
 	try {
 		const user = await UserModel.create({
-			userId: "1",
+			userId,
+			...body,
 		});
 
 		return c.json(user);
