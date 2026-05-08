@@ -32,14 +32,15 @@ userApp.put("/xp/:id", async (c) => {
 	const body = await c.req.json();
 
 	try {
-		const user = await UserModel.findOneAndUpdate(
+		const user = await UserModel.findOne({ userId: id });
+		const updatedUser = await UserModel.findOneAndUpdate(
 			{ userId: id },
 			{
-				xp: body["xp"] || 1,
+				xp: user["xp"] + (body["xp"] || 1),
 			},
 		);
 
-		return c.json(user);
+		return c.json(updatedUser);
 	} catch (e) {
 		console.log(`Error user/role/:id GET: ${e}`);
 		return c.json({ error: "Failed to update user xp" }, 500);
