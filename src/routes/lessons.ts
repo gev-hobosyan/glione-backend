@@ -18,11 +18,9 @@ lessonsApp.get("/", async (c) => {
 	}
 });
 
-lessonsApp.get("/admin/", async (c) => {
-	const body = await c.req.json();
-
+lessonsApp.get("/admin/en", async (c) => {
 	try {
-		const lessons = await LessonModel.find({ lang: body["lang"] || "en" });
+		const lessons = await LessonModel.find({ lang: "en" });
 		return c.json(lessons);
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
@@ -30,14 +28,24 @@ lessonsApp.get("/admin/", async (c) => {
 	}
 });
 
-lessonsApp.get("/count/:count", async (c) => {
+lessonsApp.get("/admin/am", async (c) => {
+	try {
+		const lessons = await LessonModel.find({ lang: "am" });
+		return c.json(lessons);
+	} catch (error) {
+		console.error("Error fetching lessons:", error);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+});
+
+lessonsApp.get("/count/en/:count", async (c) => {
 	const count = parseInt(c.req.param("count"));
 	const body = await c.req.json();
-	
+
 	try {
 		const lessons = await LessonModel.find({
 			published: true,
-			lang: body["lang"] || "en",
+			lang: "en",
 		}).limit(count);
 		return c.json(lessons);
 	} catch (error) {
@@ -46,12 +54,43 @@ lessonsApp.get("/count/:count", async (c) => {
 	}
 });
 
-lessonsApp.get("/display", async (c) => {
+lessonsApp.get("/count/am/:count", async (c) => {
+	const count = parseInt(c.req.param("count"));
+	const body = await c.req.json();
+
+	try {
+		const lessons = await LessonModel.find({
+			published: true,
+			lang: "am",
+		}).limit(count);
+		return c.json(lessons);
+	} catch (error) {
+		console.error("Error fetching lessons:", error);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+});
+
+lessonsApp.get("/display/en", async (c) => {
 	const body = await c.req.json();
 
 	try {
 		const lessons = await LessonModel.find(
-			{ published: true, lang: body["lang"] || "en" },
+			{ published: true, lang: "en" },
+			"title description tags authors section",
+		);
+		return c.json(lessons);
+	} catch (e) {
+		console.error("Error fetching lessons:", e);
+		return c.json({ error: "Failed to fetch lessons" }, 500);
+	}
+});
+
+lessonsApp.get("/display/am", async (c) => {
+	const body = await c.req.json();
+
+	try {
+		const lessons = await LessonModel.find(
+			{ published: true, lang: "am" },
 			"title description tags authors section",
 		);
 		return c.json(lessons);
