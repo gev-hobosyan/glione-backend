@@ -40,7 +40,6 @@ lessonsApp.get("/admin/am", async (c) => {
 
 lessonsApp.get("/count/en/:count", async (c) => {
 	const count = parseInt(c.req.param("count"));
-	const body = await c.req.json();
 
 	try {
 		const lessons = await LessonModel.find({
@@ -56,7 +55,6 @@ lessonsApp.get("/count/en/:count", async (c) => {
 
 lessonsApp.get("/count/am/:count", async (c) => {
 	const count = parseInt(c.req.param("count"));
-	const body = await c.req.json();
 
 	try {
 		const lessons = await LessonModel.find({
@@ -71,8 +69,6 @@ lessonsApp.get("/count/am/:count", async (c) => {
 });
 
 lessonsApp.get("/display/en", async (c) => {
-	const body = await c.req.json();
-
 	try {
 		const lessons = await LessonModel.find(
 			{ published: true, lang: "en" },
@@ -86,8 +82,6 @@ lessonsApp.get("/display/en", async (c) => {
 });
 
 lessonsApp.get("/display/am", async (c) => {
-	const body = await c.req.json();
-
 	try {
 		const lessons = await LessonModel.find(
 			{ published: true, lang: "am" },
