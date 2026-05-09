@@ -57,4 +57,8 @@ lessonsApp.delete("/", async (c) => {
 	}
 });
 
+lessonsApp.put("/", async (c) => {
+	
+})
+
 export default lessonsApp;

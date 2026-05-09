@@ -59,7 +59,10 @@ userApp.put("/energy/:id", async (c) => {
 				userId: id,
 			},
 			{
-				energy: user["energy"] - (body["energy"] || 1),
+				energy:
+					user["energy"] - (body["energy"] || 1) > 0
+						? user["energy"] - (body["energy"] || 1)
+						: 0,
 			},
 		);
 
