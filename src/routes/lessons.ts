@@ -4,8 +4,13 @@ import { LessonModel } from "../schemas/lesson";
 const lessonsApp = new Hono();
 
 lessonsApp.get("/", async (c) => {
+	const body = await c.req.json();
+
 	try {
-		const lessons = await LessonModel.find({ published: true });
+		const lessons = await LessonModel.find({
+			published: true,
+			lang: body["lang"] || "en",
+		});
 		return c.json(lessons);
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
@@ -14,8 +19,10 @@ lessonsApp.get("/", async (c) => {
 });
 
 lessonsApp.get("/admin/", async (c) => {
+	const body = await c.req.json();
+
 	try {
-		const lessons = await LessonModel.find();
+		const lessons = await LessonModel.find({ lang: body["lang"] || "en" });
 		return c.json(lessons);
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
@@ -25,8 +32,13 @@ lessonsApp.get("/admin/", async (c) => {
 
 lessonsApp.get("/count/:count", async (c) => {
 	const count = parseInt(c.req.param("count"));
+	const body = await c.req.json();
+	
 	try {
-		const lessons = await LessonModel.find({ published: true }).limit(count);
+		const lessons = await LessonModel.find({
+			published: true,
+			lang: body["lang"] || "en",
+		}).limit(count);
 		return c.json(lessons);
 	} catch (error) {
 		console.error("Error fetching lessons:", error);
@@ -35,9 +47,11 @@ lessonsApp.get("/count/:count", async (c) => {
 });
 
 lessonsApp.get("/display", async (c) => {
+	const body = await c.req.json();
+
 	try {
 		const lessons = await LessonModel.find(
-			{ published: true },
+			{ published: true, lang: body["lang"] || "en" },
 			"title description tags authors section",
 		);
 		return c.json(lessons);
@@ -56,9 +70,5 @@ lessonsApp.delete("/", async (c) => {
 		return c.json({ error: "Failed to fetch lessons" }, 500);
 	}
 });
-
-lessonsApp.put("/", async (c) => {
-	
-})
 
 export default lessonsApp;

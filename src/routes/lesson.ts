@@ -43,6 +43,7 @@ lessonApp.delete("/:id", async (c) => {
 
 lessonApp.post("/", async (c) => {
 	const body = await c.req.json();
+
 	try {
 		const lesson = body as Lesson;
 
@@ -54,6 +55,7 @@ lessonApp.post("/", async (c) => {
 			authors: lesson.authors,
 			section: lesson.section,
 			steps: lesson.steps,
+			lang: lesson.lang,
 		});
 
 		return c.json(dbLesson, 201);

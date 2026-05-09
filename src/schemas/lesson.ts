@@ -8,6 +8,7 @@ const lessonSchema = new Schema(
 		tags: [{ name: { type: String } }],
 		authors: [{ name: { type: String } }],
 		section: { type: String, required: true },
+		lang: { type: String, default: "en" },
 		steps: [
 			{
 				title: { type: String },
